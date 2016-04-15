@@ -1,0 +1,28 @@
+{
+	"FileVersion" : 1,
+	
+	"FriendlyName" : "Wwise Unreal Engine 4 Integration",
+	"Version" : 201516,
+	"VersionName" : "2015.1.6 build 5553",
+	"CreatedBy" : "Audiokinetic, Inc.",
+	"CreatedByURL" : "http://audiokinetic.com",
+	"EngineVersion" : "4.11.0",
+	"Description" : "Wwise integration for Unreal Engine 4",
+	"Category" : "Audio",
+	"EnabledByDefault" : false,
+	
+	"Modules" :
+	[
+		{
+			"Name" : "AkAudio",
+			"Type" : "Runtime",
+			"LoadingPhase" : "PreDefault"
+		},
+		{
+			"Name" : "AudiokineticTools",
+			"Type" : "Editor"
+		}
+	],
+	
+	"CanContainContent" : true
+}
