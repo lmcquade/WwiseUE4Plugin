@@ -29,21 +29,21 @@ For more information on the difference between engine and installed plug-ins, pl
 2. Since the Wwise UE4 integration may need to be rebuilt on the fly by the Unreal Editor during the packaging process, several folders from the Wwise SDK installation folder must be copied into the "Wwise" plug-in folder hierarchy. On Windows, the Wwise SDK will be found at `C:\Program Files (x86)\Audiokinetic\Wwise v2016.1.6 build 5553\SDK`, and on Mac, the Wwise SDK is found at `~/Wwise/Wwise v2016.1.6 build 5553/SDK`. The following folders are required:
 	* Include files:
 		* Source: `WWISESDK\include\*.*`
-		* Destination: \c `.../Plugins/Wwise/ThirdParty/include`
+		* Destination: `.../Plugins/Wwise/ThirdParty/include`
 	* SoundEngine samples
 		* Source: `WWISESDK\samples\SoundEngine\*.*`
-		* Destination: \c `.../Plugins/Wwise/ThirdParty/samples/SoundEngine`
+		* Destination: `.../Plugins/Wwise/ThirdParty/samples/SoundEngine`
 	* Windows SDK
 		* Source: `WWISESDK\x64_*\*.*`
-		* Destination: \c `.../Plugins/Wwise/ThirdParty/x64_*`
+		* Destination: `.../Plugins/Wwise/ThirdParty/x64_*`
 	* Mac SDK
 		* Source: `WWISESDK\Mac\*.*`
-		* Destination: \c `.../Plugins/Wwise/ThirdParty/Mac`
+		* Destination: `.../Plugins/Wwise/ThirdParty/Mac`
 
 For Android, iOS, Linux, PlayStation 4 and Xbox One, the libraries must also be copied:
 
 * Source: `WWISESDK\<Your Platform>\*.*`
-* Destination: \c `.../Plugins/Wwise/ThirdParty/<Your Platform>`
+* Destination: `.../Plugins/Wwise/ThirdParty/<Your Platform>`
 
 
 
