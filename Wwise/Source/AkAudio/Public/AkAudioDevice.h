@@ -708,6 +708,10 @@ private:
 	static bool m_bSoundEngineInitialized;
 	TArray< FVector > m_listenerPositions;
 
+	// OCULUS_START - vhamm - suspend audio when not in focus
+	bool m_isSuspended;
+	// OCULUS_END
+
 	uint8 MaxAuxBus;
 
 	FAkBankManager * AkBankManager;

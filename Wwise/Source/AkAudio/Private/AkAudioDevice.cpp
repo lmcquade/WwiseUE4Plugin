@@ -17,6 +17,10 @@
 #include "AkAudioClasses.h"
 #include "EditorSupportDelegates.h"
 #include "ISettingsModule.h"
+	
+// OCULUS_START
+#include "Runtime/HeadMountedDisplay/Public/IHeadMountedDisplayModule.h"
+// OCULUS_END
 
 #include <AK/Plugin/AllPluginsRegistrationHelpers.h>
 
@@ -156,6 +160,10 @@ bool FAkAudioDevice::Init( void )
 	}
 #endif
 
+	// OCULUS_START - vhamm - suspend audio when not in focus
+	m_isSuspended = false;
+	// OCULUS_END
+
 	FWorldDelegates::LevelRemovedFromWorld.AddRaw(this, &FAkAudioDevice::OnLevelRemoved);
 
 
@@ -177,6 +185,28 @@ bool FAkAudioDevice::Update( float DeltaTime )
 {
 	if ( m_bSoundEngineInitialized )
 	{
+		// OCULUS_START - vhamm - suspend audio when not in focus
+		if (FApp::UseVRFocus())
+		{
+			if (FApp::HasVRFocus())
+			{
+				if (m_isSuspended)
+				{
+					AK::SoundEngine::WakeupFromSuspend();
+					m_isSuspended = false;
+				}
+			}
+			else
+			{
+				if (!m_isSuspended)
+				{
+					AK::SoundEngine::Suspend(true);
+					m_isSuspended = true;
+				}
+			}
+		}
+		// OCULUS_END
+
 		AK::SoundEngine::RenderAudio();
 	}
 
@@ -1635,6 +1665,22 @@ bool FAkAudioDevice::EnsureInitialized()
 	}
 
 #endif
+
+	// OCULUS_START vhamm audio redirect with build of wwise >= 2015.1.5
+#if AK_WWISESDK_VERSION_BUILD >= 5528
+	if (IHeadMountedDisplayModule::IsAvailable())
+	{
+		FHeadMountedDisplayModuleExt* const HmdEx = FHeadMountedDisplayModuleExt::GetExtendedInterface(&IHeadMountedDisplayModule::Get());
+		FString AudioOutputDevice = HmdEx ? HmdEx->GetAudioOutputDevice() : FString();
+
+		if(!AudioOutputDevice.IsEmpty())
+		{
+			initSettings.eMainOutputType = AkAudioAPI::AkAPI_Wasapi;
+			platformInitSettings.idAudioDevice = AK::GetDeviceIDFromName((wchar_t*) *AudioOutputDevice);
+		}
+	}
+#endif
+	// OCULUS_END
 
 	if ( AK::SoundEngine::Init( &initSettings, &platformInitSettings ) != AK_Success )
 	{
