@@ -34,10 +34,10 @@ bool UInterpTrackAkAudioEventHelper::PreCreateKeyframe(UInterpTrack * Track, flo
 	IMatineeBase* InterpEd = Mode->InterpEd;
 	check(InterpEd != NULL);
 
-	UAkAudioEvent* SelectedAkEvent = GEditor->GetSelectedObjects()->GetTop<UAkAudioEvent>();
+	UAkAudioEvent* SelectedEvent = GEditor->GetSelectedObjects()->GetTop<UAkAudioEvent>();
 
 	TSharedRef<SWidget> PropWidget = SNew(SMatineeAkEventKeyFrameAdder)
-		.SelectedAkEvent(SelectedAkEvent)
+		.SelectedAkEvent(SelectedEvent)
 		.OnAkEventSet(FOnAkEventSet::CreateUObject(this,&UInterpTrackAkAudioEventHelper::OnAkEventSet, InterpEd, Track));
 
 	TSharedPtr< SWindow > Parent = FSlateApplication::Get().GetActiveTopLevelWindow();

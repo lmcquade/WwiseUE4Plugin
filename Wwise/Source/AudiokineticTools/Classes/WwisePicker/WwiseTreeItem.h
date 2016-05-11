@@ -54,8 +54,8 @@ struct FWwiseTreeItem : public TSharedFromThis<FWwiseTreeItem>
 	FWwiseTreeItem(FString InDisplayName, FString InFolderPath, TSharedPtr<FWwiseTreeItem> InParent, EWwiseTreeItemType::Type InItemType)
 		: DisplayName(MoveTemp(InDisplayName))
 		, FolderPath(MoveTemp(InFolderPath))
-		, Parent(MoveTemp(InParent))
 		, ItemType(MoveTemp(InItemType))
+		, Parent(MoveTemp(InParent))
 		, IsVisible(true)
 	{}
 
