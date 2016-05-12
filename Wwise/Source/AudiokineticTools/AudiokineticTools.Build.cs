@@ -40,6 +40,7 @@ public class AudiokineticTools : ModuleRules
 				"XmlParser",
 				"WorkspaceMenuStructure",
 				"DirectoryWatcher",
+                "Projects",
                 "PropertyEditor"
             });
 

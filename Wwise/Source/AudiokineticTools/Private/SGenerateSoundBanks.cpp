@@ -11,6 +11,7 @@
 #include "AkAudioBankGenerationHelpers.h"
 #include "AssetRegistryModule.h"
 #include "TargetPlatform.h"
+#include "IProjectManager.h"
 #include "JsonObject.h"
 
 #define LOCTEXT_NAMESPACE "AkAudio"
@@ -169,46 +170,30 @@ void SGenerateSoundBanks::PopulateList(void)
 	GetWwisePlatforms();
 }
 
+void SGenerateSoundBanks::AddPlatformIfSupported(const TSet<FString>& SupportedPlatforms, const FString& UnrealName, const TCHAR* WwiseName)
+{
+	if (SupportedPlatforms.Num() == 0 || SupportedPlatforms.Contains(UnrealName))
+	{
+		PlatformNames.Add(TSharedPtr<FString>(new FString(WwiseName)));
+	}
+}
+
 void SGenerateSoundBanks::GetWwisePlatforms()
 {
-	TArray<ITargetPlatform*> availablePlatforms = GetTargetPlatformManager()->GetTargetPlatforms();
-	TSet<FString> tmpPlatforms;
+	IProjectManager& ProjectManager = IProjectManager::Get();
+	TSet<FString> SupportedPlatforms;
+	for (FName TargetPlatform : ProjectManager.GetCurrentProject()->TargetPlatforms)
+	{
+		SupportedPlatforms.Add(TargetPlatform.ToString());
+	}
 	PlatformNames.Empty();
-
-	for(int32 Idx = 0; Idx < availablePlatforms.Num(); Idx++)
-	{
-		FString platformToAdd = availablePlatforms[Idx]->PlatformName();
-
-		// Special cases for platforms having multiple sub-platforms...
-        if( platformToAdd.ToLower().Contains("windows") )
-        {
-            platformToAdd = "Windows";
-        }
-        else if( platformToAdd.ToLower().Contains("mac") )
-        {
-            platformToAdd = "Mac";
-        }
-        else if( platformToAdd.ToLower().Contains("linux") )
-        {
-            platformToAdd = "Linux";
-        }
-		else if (platformToAdd.ToLower().Contains("android") )
-		{
-			platformToAdd = "Android";
-		}
-		else if (platformToAdd.ToLower().Contains("desktop") || platformToAdd.ToLower().Contains("html"))
-		{
-			continue;
-		}
-
-		tmpPlatforms.Add(platformToAdd);
-	}
-
-	TArray<FString> tmpPlatformArray = tmpPlatforms.Array();
-	for(int32 Idx = 0; Idx < tmpPlatforms.Num(); Idx++)
-	{
-		PlatformNames.Add(TSharedPtr<FString>(new FString(tmpPlatformArray[Idx])));
-	}
+	AddPlatformIfSupported(SupportedPlatforms, TEXT("Android"), TEXT("Android"));
+	AddPlatformIfSupported(SupportedPlatforms, TEXT("IOS"), TEXT("IOS"));
+	AddPlatformIfSupported(SupportedPlatforms, TEXT("LinuxNoEditor"), TEXT("Linux"));
+	AddPlatformIfSupported(SupportedPlatforms, TEXT("MacNoEditor"), TEXT("Mac"));
+	AddPlatformIfSupported(SupportedPlatforms, TEXT("PS4"), TEXT("PS4"));
+	AddPlatformIfSupported(SupportedPlatforms, TEXT("WindowsNoEditor"), TEXT("Windows"));
+	AddPlatformIfSupported(SupportedPlatforms, TEXT("XboxOne"), TEXT("XboxOne"));
 }
 
 FReply SGenerateSoundBanks::OnKeyDown( const FGeometry& MyGeometry, const FKeyEvent& InKeyboardEvent )
