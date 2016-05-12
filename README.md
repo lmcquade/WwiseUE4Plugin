@@ -32,9 +32,14 @@ Installation
 
 For more information on the difference between engine and installed plug-ins, please refer to the [Unreal Engine Wiki](https://wiki.unrealengine.com/An_Introduction_to_UE4_Plugins#Engine_vs._Installed).
 
-1. Copy the "Wwise" folder to the "Plugins" folder. To install the UnrealEngine4 Wwise plug-in as an:
-	* Engine plug-in, copy the "Wwise" UE4 Integration folder to `…/<UE4 installation directory>/Engine/Plugins`. 
-	* Installed plug-in, copy the "Wwise" UE4 Integration folder to `…/<UE4 project directory>/Plugins`.
+1. Checkout "WwiseUE4Plugin" repository conent to the "Plugins/Wwise" folder. To install the UnrealEngine4 Wwise plug-in as an:
+	* Engine plug-in, copy the "Wwise" UE4 Integration folder to `…/<UE4 installation directory>/Engine/Plugins/Wwise`.
+	* Installed plug-in, copy "WwiseUE4Plugin" repository conent to `…/<UE4 project directory>/Plugins/Wwise`.
+
+    You can also add "WwiseUE4Plugin" repository as [git submodule](https://git-scm.com/docs/git-submodule) by command like:
+    ```bash
+git submodule add -f --name wwise https://github.com/audiokinetic/WwiseUE4Plugin.git Engine/Plugins/Wwise
+```
 2. Since the Wwise UE4 integration may need to be rebuilt on the fly by the Unreal Editor during the packaging process, several folders from the Wwise SDK installation folder must be copied into the "Wwise" plug-in folder hierarchy. On Windows, the Wwise SDK will be found at `C:\Program Files (x86)\Audiokinetic\Wwise v2016.1.6 build 5553\SDK`, and on Mac, the Wwise SDK is found at `~/Wwise/Wwise v2016.1.6 build 5553/SDK`. The following folders are required:
 	* Include files:
 		* Source: `WWISESDK\include\*.*`
