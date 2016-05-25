@@ -208,9 +208,8 @@ bool FAkAudioDevice::Update( float DeltaTime )
 		// OCULUS_END
 
 		AK::SoundEngine::RenderAudio();
+		UpdateListeners();
 	}
-
-	UpdateListeners();
 
 	return true;
 }
@@ -320,15 +319,17 @@ void FAkAudioDevice::UpdateListeners()
 
 		for(int32 i = 0; i < PlayerControllers.Num(); i++)
 		{
-			FVector Location;
-			FVector Front;
-			FVector Right;
-			PlayerControllers[i]->GetAudioListenerPosition(Location, Front, Right);
+			if (PlayerControllers[i] != nullptr)
+			{
+				FVector Location;
+				FVector Front;
+				FVector Right;
+				PlayerControllers[i]->GetAudioListenerPosition(Location, Front, Right);
 
-			FVector Up = FVector::CrossProduct(Front, Right);
+				FVector Up = FVector::CrossProduct(Front, Right);
 
-			SetListener(i, Location, Up, Front);
-
+				SetListener(i, Location, Up, Front);
+			}
 		}
 	}
 }
