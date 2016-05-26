@@ -1665,8 +1665,6 @@ bool FAkAudioDevice::EnsureInitialized()
 		platformInitSettings.bGlobalFocus = false;
 	}
 
-#endif
-
 	// OCULUS_START vhamm audio redirect with build of wwise >= 2015.1.5
 #if AK_WWISESDK_VERSION_BUILD >= 5528
 	if (IHeadMountedDisplayModule::IsAvailable())
@@ -1682,6 +1680,8 @@ bool FAkAudioDevice::EnsureInitialized()
 	}
 #endif
 	// OCULUS_END
+
+#endif
 
 	if ( AK::SoundEngine::Init( &initSettings, &platformInitSettings ) != AK_Success )
 	{
